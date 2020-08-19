@@ -94,3 +94,32 @@ for(gp_name <- gp_list)
      df_gp_users=df_gp_users.union(df_users)
    }
 }
+
+// COMMAND ----------
+
+// DBTITLE 1,Access Group Api using python
+// MAGIC %python
+// MAGIC import http.client
+// MAGIC import mimetypes
+// MAGIC 
+// MAGIC conn = http.client.HTTPSConnection("adb-<********>.5.azuredatabricks.net")
+// MAGIC payload = "{\r\n    \"group_name\": \"admins\"\r\n}"
+// MAGIC headers = {
+// MAGIC   'Content-Type': 'application/json',
+// MAGIC   'Authorization': 'Bearer <your databricks token>'
+// MAGIC }
+// MAGIC conn.request("GET", "/api/2.0/groups/list-members", payload, headers)
+// MAGIC res = conn.getresponse()
+// MAGIC data = res.read()
+// MAGIC print(data.decode("utf-8"))
+
+// COMMAND ----------
+
+// DBTITLE 1,Access Group Api using curl
+// MAGIC %sh
+// MAGIC curl --location --request GET 'https://adb-<*******>.5.azuredatabricks.net/api/2.0/groups/list-members' \
+// MAGIC --header 'Content-Type: application/json' \
+// MAGIC --header 'Authorization: Bearer <your databricks token>' \
+// MAGIC --data-raw '{
+// MAGIC     "group_name": "admins"
+// MAGIC }'
